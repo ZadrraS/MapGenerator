@@ -1,8 +1,10 @@
 #ifndef FEUDOSIM_HELPERS_MATH_H_
 #define FEUDOSIM_HELPERS_MATH_H_
 
-namespace feudosim {
+#include <cmath>
 
+namespace feudosim 
+{
 namespace math
 {
 
@@ -10,26 +12,24 @@ const double PI = 3.141592653589793;
 
 float InterpolateLinear(double x0, double x1, double alpha)
 {
-   return x0 * (1 - alpha) + alpha * x1;
+   return x0 * (1.0 - alpha) + alpha * x1;
 }
 
-double InterpolateCosine(double y1, double y2, double mu)
+double InterpolateCosine(double x0, double x1, double alpha)
 {
-   double mu2 = (1-cos(mu*PI))/2;
-   return(y1*(1-mu2)+y2*mu2);
+   double cos_alpha = (1.0 - cos(alpha * PI)) / 2.0;
+   return InterpolateLinear(x0, x1, cos_alpha);
 }
 
-double InterpolateCubic(double y0, double y1, double y2, double y3, double mu)
+double InterpolateCubic(double x0, double x1, double x2, double x3, double alpha)
 {
-   double a0,a1,a2,a3,mu2;
+   double alpha_sq = alpha * alpha;
+   double a0 = x3 - x2 - x0 + x1;
+   double a1 = x0 - x1 - a0;
+   double a2 = x2 - x0;
+   double a3 = x1;
 
-   mu2 = mu*mu;
-   a0 = y3 - y2 - y0 + y1;
-   a1 = y0 - y1 - a0;
-   a2 = y2 - y0;
-   a3 = y1;
-
-   return a0*mu*mu2+a1*mu2+a2*mu+a3;
+   return a0 * alpha * alpha_sq + a1 * alpha_sq + a2 * alpha + a3;
 }
 
 }  // namespace math

@@ -1,12 +1,15 @@
 #include "generation/terrain_generator.h"
 
-namespace feudosim {
+namespace feudosim 
+{
 
-TerrainGenerator::TerrainGenerator() {
+TerrainGenerator::TerrainGenerator() 
+{
 
 }
 
-TerrainGenerator::~TerrainGenerator() {
+TerrainGenerator::~TerrainGenerator() 
+{
 
 }
 

@@ -3,7 +3,8 @@
 
 #include "map/array2d.h"
 
-namespace feudosim {
+namespace feudosim 
+{
 
 uint8_t *ConvertArrayToSFMLFormat(const Array2D<float> &array2d);
 

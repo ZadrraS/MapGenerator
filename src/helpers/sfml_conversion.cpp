@@ -1,8 +1,10 @@
 #include "helpers/sfml_conversion.h"
 
-namespace feudosim {
+namespace feudosim 
+{
 
-uint8_t *ConvertArrayToSFMLFormat(const Array2D<float> &array2d) {
+uint8_t *ConvertArrayToSFMLFormat(const Array2D<float> &array2d) 
+{
   uint8_t *sfml_data = new uint8_t[array2d.GetWidth() * array2d.GetHeight() * 4];
   for (size_t y = 0; y < array2d.GetHeight(); ++y) {
     for (size_t x = 0; x < array2d.GetWidth(); ++x) {

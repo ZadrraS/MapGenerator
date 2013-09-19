@@ -1,4 +1,4 @@
-#include "generation/perlin_noise_generator.h"
+#include "generation/fractal_noise_generator.h"
 #include "helpers/sfml_conversion.h"
 #include "map/array2d.h"
 
@@ -19,7 +19,7 @@ int main(int argc, char const *argv[])
 {
   sf::RenderWindow window(sf::VideoMode(1024, 1024), "Test");
 
-  feudosim::PerlinNoiseGenerator noise_generator;
+  feudosim::FractalNoiseGenerator noise_generator(8, 0.6);
   feudosim::Array2D<float> noise_image = noise_generator.Generate(1024, 1024);
 
   sf::Texture texture;

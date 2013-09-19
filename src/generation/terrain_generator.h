@@ -1,9 +1,11 @@
 #ifndef FEUDOSIM_GENERATION_TERRAIN_GENERATOR_H_
 #define FEUDOSIM_GENERATION_TERRAIN_GENERATOR_H_
 
-namespace feudosim {
+namespace feudosim 
+{
 
-class TerrainGenerator {
+class TerrainGenerator 
+{
  public:
   TerrainGenerator();
   ~TerrainGenerator();
