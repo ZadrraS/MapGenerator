@@ -4,7 +4,7 @@ LDFLAGS=
 LDLIBS=-lsfml-graphics -lsfml-window -lsfml-system
 INCLDS=-I.
 
-SOURCES:=$(wildcard *.cpp)
+SOURCES:=$(wildcard *.cpp map/*.cpp generation/*.cpp)
 
 OBJECTS=$(SOURCES:.cpp=.o)
 
