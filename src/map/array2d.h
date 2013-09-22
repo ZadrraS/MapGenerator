@@ -82,6 +82,9 @@ class Array2D
     if (width == 0 || height == 0)
       throw std::invalid_argument("Given Array2D dimensions invalid.");
 
+    if (width == width_ && height == height_)
+      return;
+
     if (data_ != NULL)
       delete [] data_;
 

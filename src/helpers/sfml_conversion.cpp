@@ -1,5 +1,7 @@
 #include "helpers/sfml_conversion.h"
 
+#include <boost/foreach.hpp>
+
 namespace feudosim 
 {
 
@@ -16,6 +18,17 @@ uint8_t *ConvertArrayToSFMLFormat(const Array2D<float> &array2d)
   }
 
   return sfml_data;
+}
+
+void DrawPoints(sf::RenderWindow &render_window, const std::vector< Vector2<int> > &points)
+{
+  BOOST_FOREACH(const Vector2<int> &point, points)
+  {
+    sf::CircleShape dot(3.0f);
+    dot.setFillColor(sf::Color::White);
+    dot.setPosition(point.x, point.y);
+    render_window.draw(dot);
+  }
 }
 
 }  // namespace feudosim
