@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-Wall -c -g -std=c++11
+CFLAGS=-Wall -Wextra -c -g -std=c++11
 LDFLAGS=
 LDLIBS=-lsfml-graphics -lsfml-window -lsfml-system
 INCLDS=-I.

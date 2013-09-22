@@ -2,26 +2,25 @@
 #define FEUDOSIM_GENERATION_FRACTAL_NOISE_GENERATOR_H_
 
 #include "map/array2d.h"
-#include "generation/noise_generator.h"
 
-#include <random>
+#include <cstddef>
 
 namespace feudosim 
 {
 
-class FractalNoiseGenerator : public NoiseGenerator
+class FractalNoiseGenerator 
 {
  public:
-  FractalNoiseGenerator(size_t octave_count, double persistance);
+  FractalNoiseGenerator(size_t octave_count, double period, double gain, double lacunarity);
   ~FractalNoiseGenerator();
 
-  Array2D<float> Generate(size_t width, size_t height);
+  virtual Array2D<float> Generate(size_t width, size_t height) = 0;
 
- private:  
-  std::default_random_engine random_engine_;
-
+ protected: 
   size_t octave_count_;
-  double persistance_;
+  double period_;
+  double gain_;
+  double lacunarity_;
 };
 
 }  // namespace feudosim

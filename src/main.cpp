@@ -1,4 +1,5 @@
-#include "generation/fractal_noise_generator.h"
+#include "generation/fractal_simplex_noise_generator.h"
+#include "generation/fractal_value_noise_generator.h"
 #include "helpers/sfml_conversion.h"
 #include "map/array2d.h"
 
@@ -19,14 +20,13 @@ int main(int argc, char const *argv[])
 {
   sf::RenderWindow window(sf::VideoMode(1024, 1024), "Test");
 
-  feudosim::FractalNoiseGenerator noise_generator(8, 0.6);
+  feudosim::FractalSimplexNoiseGenerator noise_generator(8, 0.5, 0.65, 2.0);
   feudosim::Array2D<float> noise_image = noise_generator.Generate(1024, 1024);
 
   sf::Texture texture;
   texture.create(1024, 1024);
   sf::Sprite sprite;
   PasteArray2DToSprite(noise_image, texture, sprite);
-
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {

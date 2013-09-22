@@ -116,6 +116,42 @@ class Array2D
     height_ = 0;
   }
 
+  void Normalize()
+  {
+    if (data_ != NULL)
+    {
+      T max_value = At(0, 0);
+      T min_value = At(0, 0);
+      for (size_t y = 0; y < height_; ++y)
+      {
+        for (size_t x = 0; x < width_; ++x)
+        {
+          if (At(x, y) > max_value)
+            max_value = At(x, y);
+          if (At(x, y) < min_value)
+            min_value = At(x, y);
+        }
+      }
+
+      Normalize(min_value, max_value);
+    }
+  }
+
+
+  void Normalize(const T &min_value, const T &max_value)
+  {
+    if (data_ != NULL)
+    {
+      for (size_t y = 0; y < height_; ++y)
+      {
+        for (size_t x = 0; x < width_; ++x)
+        {
+          At(x, y) = (At(x, y) - min_value) / (max_value - min_value);
+        }
+      }
+    }
+  }
+
  private:  
   size_t width_, height_;
   T *data_;

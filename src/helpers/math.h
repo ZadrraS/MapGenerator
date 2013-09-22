@@ -10,18 +10,18 @@ namespace math
 
 const double PI = 3.141592653589793;
 
-float InterpolateLinear(double x0, double x1, double alpha)
+inline float InterpolateLinear(double x0, double x1, double alpha)
 {
    return x0 * (1.0 - alpha) + alpha * x1;
 }
 
-double InterpolateCosine(double x0, double x1, double alpha)
+inline double InterpolateCosine(double x0, double x1, double alpha)
 {
    double cos_alpha = (1.0 - cos(alpha * PI)) / 2.0;
    return InterpolateLinear(x0, x1, cos_alpha);
 }
 
-double InterpolateCubic(double x0, double x1, double x2, double x3, double alpha)
+inline double InterpolateCubic(double x0, double x1, double x2, double x3, double alpha)
 {
    double alpha_sq = alpha * alpha;
    double a0 = x3 - x2 - x0 + x1;
