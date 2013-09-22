@@ -38,37 +38,41 @@ Array2D<float> FractalValueNoiseGenerator::Generate(size_t width, size_t height)
   Array2D<float> noise_map(width, height);
   noise_map.SetTo(0.0f);
 
-  float amplitude = 1.0f;
-  float total_amplitude = 0.0f;
+  double amplitude = gain_;
+  double total_amplitude = 0.0f;
  
-  for (int octave = (int)octave_count_ - 1; octave >= 0; --octave)
-  {
-    size_t sample_period = 1 << octave; // calculates 2 ^ k
-    float sample_frequency = 1.0f / sample_period;
+  size_t sample_period = 1 << octave_count_;
+  double frequency = 1.0 / (sample_period * period_);
 
-    amplitude *= (float)gain_;
-    total_amplitude += amplitude;
+  for (size_t octave = 0; octave < octave_count_; ++octave)
+  {
+    sample_period = 1.0f / frequency;
+  
     for (size_t y = 0; y < noise_map.GetHeight(); y++)
     {
       size_t sample_y0 = (y / sample_period) * sample_period;
       size_t sample_y1 = (sample_y0 + sample_period) % noise_map.GetHeight();
-      float vertical_blend = (y - sample_y0) * sample_frequency;
+      double vertical_blend = (y - sample_y0) * frequency;
 
       for (size_t x = 0; x < noise_map.GetWidth(); x++) 
       {
         int sample_x0 = (x / sample_period) * sample_period;
         int sample_x1 = (sample_x0 + sample_period) % noise_map.GetWidth();
-        float horizontal_blend = (x - sample_x0) * sample_frequency;
+        double horizontal_blend = (x - sample_x0) * frequency;
 
-        float top = math::InterpolateCosine(base_noise_map.At(sample_x0, sample_y0),
+        double top = math::InterpolateCosine(base_noise_map.At(sample_x0, sample_y0),
         base_noise_map.At(sample_x1, sample_y0), horizontal_blend);
 
-        float bottom = math::InterpolateCosine(base_noise_map.At(sample_x0, sample_y1),
+        double bottom = math::InterpolateCosine(base_noise_map.At(sample_x0, sample_y1),
         base_noise_map.At(sample_x1, sample_y1), horizontal_blend);
 
         noise_map.At(x, y) += math::InterpolateCosine(top, bottom, vertical_blend) * amplitude;
       }
     }
+
+    total_amplitude += amplitude;
+    frequency *= lacunarity_;
+    amplitude *= gain_;
   }
 
   for (size_t y = 0; y < base_noise_map.GetHeight(); ++y) 
@@ -78,6 +82,8 @@ Array2D<float> FractalValueNoiseGenerator::Generate(size_t width, size_t height)
       noise_map.At(x, y) /= total_amplitude;
     }
   }
+
+  //noise_map.Normalize();
 
   return noise_map;
 }

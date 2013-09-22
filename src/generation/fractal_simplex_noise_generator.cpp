@@ -59,7 +59,7 @@ Array2D<float> FractalSimplexNoiseGenerator::Generate(size_t width, size_t heigh
       {
         double grid_x = (double)x * frequency;
         double grid_y = (double)y * frequency;
-        
+        double mid_point = noise_map.GetHeight() * 0.5 * frequency;
         skew_value = (grid_x + grid_y) * general_skew;
         orient_left.x = (int)(grid_x + skew_value);
         orient_left.y = (int)(grid_y + skew_value);

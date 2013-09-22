@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
 {
   sf::RenderWindow window(sf::VideoMode(1024, 1024), "Test");
 
-  feudosim::FractalSimplexNoiseGenerator noise_generator(8, 0.5, 0.65, 2.0);
+  feudosim::FractalSimplexNoiseGenerator noise_generator(16, 1.0, 0.65, 2.0);
   feudosim::Array2D<float> noise_image = noise_generator.Generate(1024, 1024);
 
   sf::Texture texture;
