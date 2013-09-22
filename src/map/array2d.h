@@ -51,12 +51,12 @@ class Array2D
     return *this;
   }
 
-  size_t GetWidth() const 
+  size_t width() const 
   {
     return width_;
   }
 
-  size_t GetHeight() const 
+  size_t height() const 
   {
     return height_;
   }
@@ -95,11 +95,11 @@ class Array2D
 
   void CopyFrom(const Array2D &array2d) 
   {
-    if (array2d.GetWidth() == 0 || array2d.GetHeight() == 0)
+    if (array2d.width() == 0 || array2d.height() == 0)
       throw std::invalid_argument("Given Array2D dimensions invalid.");
 
     Clean();
-    Create(array2d.GetWidth(), array2d.GetHeight());
+    Create(array2d.width(), array2d.height());
 
     memcpy((void *)data_, (const void *)array2d.data_, width_ * height_ * sizeof(T));
   }

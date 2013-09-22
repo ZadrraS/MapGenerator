@@ -48,12 +48,12 @@ Array2D<float> FractalSimplexNoiseGenerator::Generate(size_t width, size_t heigh
   }
   
   double frequency = 1.0;
-  for (size_t y = 0; y < noise_map.GetHeight(); ++y)
+  for (size_t y = 0; y < noise_map.height(); ++y)
   {
-    for (size_t x = 0; x < noise_map.GetWidth(); ++x)
+    for (size_t x = 0; x < noise_map.width(); ++x)
     {
       amplitude = 1.0;
-      frequency = 1.0 / (double)(noise_map.GetWidth() * period_);
+      frequency = 1.0 / (double)(noise_map.width() * period_);
 
       for (size_t octave = 0; octave < octave_count_; ++octave)
       {

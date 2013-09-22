@@ -27,9 +27,9 @@ Array2D<float> FractalValueNoiseGenerator::Generate(size_t width, size_t height)
   base_noise_map.SetTo(0.0f);
 
   std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
-  for (size_t y = 0; y < base_noise_map.GetHeight(); ++y) 
+  for (size_t y = 0; y < base_noise_map.height(); ++y) 
   {
-    for (size_t x = 0; x < base_noise_map.GetWidth(); ++x) 
+    for (size_t x = 0; x < base_noise_map.width(); ++x) 
     {
       base_noise_map.At(x, y) = distribution(random_engine_);
     }
@@ -48,16 +48,16 @@ Array2D<float> FractalValueNoiseGenerator::Generate(size_t width, size_t height)
   {
     sample_period = 1.0f / frequency;
   
-    for (size_t y = 0; y < noise_map.GetHeight(); y++)
+    for (size_t y = 0; y < noise_map.height(); y++)
     {
       size_t sample_y0 = (y / sample_period) * sample_period;
-      size_t sample_y1 = (sample_y0 + sample_period) % noise_map.GetHeight();
+      size_t sample_y1 = (sample_y0 + sample_period) % noise_map.height();
       double vertical_blend = (y - sample_y0) * frequency;
 
-      for (size_t x = 0; x < noise_map.GetWidth(); x++) 
+      for (size_t x = 0; x < noise_map.width(); x++) 
       {
         int sample_x0 = (x / sample_period) * sample_period;
-        int sample_x1 = (sample_x0 + sample_period) % noise_map.GetWidth();
+        int sample_x1 = (sample_x0 + sample_period) % noise_map.width();
         double horizontal_blend = (x - sample_x0) * frequency;
 
         double top = math::InterpolateCosine(base_noise_map.At(sample_x0, sample_y0),
@@ -75,9 +75,9 @@ Array2D<float> FractalValueNoiseGenerator::Generate(size_t width, size_t height)
     amplitude *= gain_;
   }
 
-  for (size_t y = 0; y < base_noise_map.GetHeight(); ++y) 
+  for (size_t y = 0; y < base_noise_map.height(); ++y) 
   {
-    for (size_t x = 0; x < base_noise_map.GetWidth(); ++x) 
+    for (size_t x = 0; x < base_noise_map.width(); ++x) 
     {
       noise_map.At(x, y) /= total_amplitude;
     }
