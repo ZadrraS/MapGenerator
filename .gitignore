@@ -11,3 +11,12 @@
 *.lai
 *.la
 *.a
+
+CMakeCache.txt
+tags
+Makefile
+bin/
+CMakeFiles/
+data/
+feudosim
+cmake_install.cmake
