@@ -19,7 +19,7 @@ void PasteArray2DToSprite(const feudosim::Array2D<float> &array2d, sf::Texture &
    delete [] array2d_data;
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
   sf::RenderWindow window(sf::VideoMode(1024, 1024), "Test");
 
