@@ -2,7 +2,7 @@
 #define FEUDOSIM_GENERATION_FRACTAL_SIMPLEX_NOISE_GENERATOR_H_
 
 #include "generation/fractal_noise_generator.h"
-#include "helpers/vector_2.h"
+#include "helpers/vector2.h"
 
 #include <random>
 
@@ -17,8 +17,7 @@ class FractalSimplexNoiseGenerator : public FractalNoiseGenerator
 
   Array2D<float> Generate(size_t width, size_t height);
 
- private:  
-  double GeneratePoint(double xin, double yin);
+ private:
   void FillOrientationTables();
   void FillPermutationTables();
 

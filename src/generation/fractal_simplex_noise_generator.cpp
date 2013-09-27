@@ -30,14 +30,29 @@ Array2D<float> FractalSimplexNoiseGenerator::Generate(size_t width, size_t heigh
 
   std::shuffle(permutations_.begin(), permutations_.end(), random_engine_);
 
-  double noise_left, noise_top, noise_right;
-  double tempdis;
-  double skew_value, unskew_value;
   double general_skew = (sqrt(3.0) - 1.0) * 0.5;
   double general_unskew = (3.0 - sqrt(3.0)) / 6.0;
 
-  Vector2<double> dist_left, dist_top, dist_right;
-  Vector2<size_t> orient_left, orient_top, orient_right;
+  /* Naming for the corners of the simplex:
+       third
+       /    \
+      /      \
+   first -- second
+
+   or
+   
+   second -- third
+      \      /
+       \    /
+        first
+
+    so that after skewing we'd get:
+    second -- third
+      |      / |
+      |    /   |
+      |  /     |
+    first -- second
+  */
 
   double amplitude = 1.0;
   double total_amplitude = 0.0;
@@ -57,56 +72,64 @@ Array2D<float> FractalSimplexNoiseGenerator::Generate(size_t width, size_t heigh
 
       for (size_t octave = 0; octave < octave_count_; ++octave)
       {
-        double grid_x = (double)x * frequency;
-        double grid_y = (double)y * frequency;
-        
-        skew_value = (grid_x + grid_y) * general_skew;
-        orient_left.x = (int)(grid_x + skew_value);
-        orient_left.y = (int)(grid_y + skew_value);
+        double simplex_x = (double)x * frequency;
+        double simplex_y = (double)y * frequency;
+       
+        // Get the grid coordinates of the first simplex point by skewing the coordinates of the current point and rounding down 
+        double skew_value = (simplex_x + simplex_y) * general_skew;
+        Vector2<size_t> skewed_first, skewed_second, skewed_third;
+        skewed_first.x = (int)(simplex_x + skew_value);
+        skewed_first.y = (int)(simplex_y + skew_value);
 
-        unskew_value = (orient_left.x + orient_left.y) * general_unskew;
-        dist_left.x = grid_x - (double)orient_left.x + unskew_value;
-        dist_left.y = grid_y - (double)orient_left.y + unskew_value;
+        // Unskew the first simplex point to get its simplex space coordinates
+        double unskew_value = (skewed_first.x + skewed_first.y) * general_unskew;
+        Vector2<double> unskewed_first;
+        unskewed_first.x = (double)skewed_first.x - unskew_value;
+        unskewed_first.y = (double)skewed_first.y - unskew_value;
 
-        if (dist_left.x > dist_left.y)
+        Vector2<double> dist_first, dist_second, dist_third;
+        // Calculate distance between current point and the first corner
+        dist_first.x =  simplex_x - unskewed_first.x;
+        dist_first.y =  simplex_y - unskewed_first.y;
+
+        // Find which triangle on the skewed grid the current point occupies. 
+        // Since we know the distance to the lower left point, the check is simple:
+        // if dist.x > dist.y, its lower right
+        // if dist.y > dist.x, its upper left
+        if (dist_first.x > dist_first.y)
         {
-          orient_top.x = 1 + orient_left.x;
-          orient_top.y = orient_left.y;
+          skewed_second.x = skewed_first.x + 1;
+          skewed_second.y = skewed_first.y;
+
+          dist_second.x = dist_first.x - 1.0 + general_unskew;
+          dist_second.y = dist_first.y + general_unskew;
         }
         else
         {
-          orient_top.x = orient_left.x;
-          orient_top.y = 1 + orient_left.y;
+          skewed_second.x = skewed_first.x;
+          skewed_second.y = skewed_first.y + 1;
+
+          dist_second.x = dist_first.x + general_unskew;
+          dist_second.y = dist_first.y - 1.0 + general_unskew;
         }
 
-        orient_right.x = 1 + orient_left.x;
-        orient_right.y = 1 + orient_left.y;
+        skewed_third.x = skewed_first.x + 1;
+        skewed_third.y = skewed_first.y + 1;
 
-        dist_top.x = dist_left.x - (orient_top.x - orient_left.x) + general_unskew;
-        dist_top.y = dist_left.y - (orient_top.y - orient_left.y) + general_unskew;
+        // Since we're moving by x and y axes unskewing value is (1.0 + 1.0) * general_unskew
+        dist_third.x = dist_first.x - 1.0 + 2.0 * general_unskew;
+        dist_third.y = dist_first.y - 1.0 + 2.0 * general_unskew;
 
-        dist_right.x = dist_left.x - 1.0 + general_unskew + general_unskew;
-        dist_right.y = dist_left.y - 1.0 + general_unskew + general_unskew;
+        double dist = std::max(0.0, 0.5 - dist_first.x * dist_first.x - dist_first.y * dist_first.y);
+        double noise_first = dist * dist * dist * dist * dist_first.DotProduct(orientations_[GetOrientationPosFromTable(skewed_first)]);
 
-        tempdis = 0.5 - dist_left.x * dist_left.x - dist_left.y * dist_left.y;
-        if (tempdis < 0.0)
-          noise_left = 0.0;
-        else
-          noise_left = tempdis * tempdis * tempdis * tempdis * dist_left.DotProduct(orientations_[GetOrientationPosFromTable(orient_left)]);
+        dist = std::max(0.0, 0.5 - dist_second.x * dist_second.x - dist_second.y * dist_second.y);
+        double noise_second = dist * dist * dist * dist * dist_second.DotProduct(orientations_[GetOrientationPosFromTable(skewed_second)]);
 
-        tempdis = 0.5 - dist_top.x * dist_top.x - dist_top.y * dist_top.y;
-        if (tempdis < 0.0)
-          noise_top = 0.0;
-        else
-          noise_top = tempdis * tempdis * tempdis * tempdis * dist_top.DotProduct(orientations_[GetOrientationPosFromTable(orient_top)]);
+        dist = std::max(0.0, 0.5 - dist_third.x * dist_third.x - dist_third.y * dist_third.y);
+        double noise_third = dist * dist * dist * dist * dist_third.DotProduct(orientations_[GetOrientationPosFromTable(skewed_third)]);
 
-        tempdis = 0.5 - dist_right.x * dist_right.x - dist_right.y * dist_right.y;
-        if (tempdis < 0.0)
-          noise_right = 0.0;
-        else
-          noise_right = tempdis * tempdis * tempdis * tempdis * dist_right.DotProduct(orientations_[GetOrientationPosFromTable(orient_right)]);
-
-        noise_map.At(x, y) += (noise_left + noise_top + noise_right) * amplitude;
+        noise_map.At(x, noise_map.height() - y - 1) += 70.0 * (noise_first + noise_second + noise_third) * amplitude;
 
         amplitude *= gain_;
         frequency *= lacunarity_;
@@ -114,7 +137,7 @@ Array2D<float> FractalSimplexNoiseGenerator::Generate(size_t width, size_t heigh
     }
   }
 
-  noise_map.Normalize();
+  noise_map /= total_amplitude;
 
   return noise_map;
 }
