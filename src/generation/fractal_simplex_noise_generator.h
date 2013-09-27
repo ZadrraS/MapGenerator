@@ -2,9 +2,8 @@
 #define FEUDOSIM_GENERATION_FRACTAL_SIMPLEX_NOISE_GENERATOR_H_
 
 #include "generation/fractal_noise_generator.h"
+#include "generation/local_simplex_noise_generator.h"
 #include "helpers/vector2.h"
-
-#include <random>
 
 namespace feudosim 
 {
@@ -18,17 +17,7 @@ class FractalSimplexNoiseGenerator : public FractalNoiseGenerator
   Array2D<float> Generate(size_t width, size_t height);
 
  private:
-  void FillOrientationTables();
-  void FillPermutationTables();
-
-  size_t GetOrientationPosFromTable(const Vector2<size_t> &position);
-
-  std::default_random_engine random_engine_; 
-
-  size_t orientation_count_;
-  std::vector< Vector2<double> > orientations_;
-  size_t permutation_count_;
-  std::vector<size_t> permutations_;
+  LocalSimplexNoiseGenerator local_noise_generator_;
 
 };
 

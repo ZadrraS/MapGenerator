@@ -15,10 +15,13 @@ add_executable(feudosim
   generation/fractal_noise_generator.cpp
   generation/fractal_simplex_noise_generator.cpp
   generation/fractal_value_noise_generator.cpp
+  generation/ridge_noise_generator.cpp
   generation/poisson_point_sampler.cpp
   generation/terrain_generator.cpp
+  generation/local_simplex_noise_generator.cpp
 
-  helpers/sfml_conversion.cpp
+  graphics/sfml_conversion.cpp
+  graphics/map_render_gradient.cpp
 )
 
 install(TARGETS feudosim DESTINATION bin)
