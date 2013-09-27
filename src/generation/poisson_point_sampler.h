@@ -1,7 +1,7 @@
 #ifndef FEUDOSIM_GENERATION_POISSON_POINT_SAMPLER_H_
 #define FEUDOSIM_GENERATION_POISSON_POINT_SAMPLER_H_
 
-#include "helpers/vector_2.h"
+#include "helpers/vector2.h"
 #include "map/array2d.h"
 #include "helpers/rectangle.h"
 
