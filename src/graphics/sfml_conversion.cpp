@@ -1,4 +1,4 @@
-#include "helpers/sfml_conversion.h"
+#include "graphics/sfml_conversion.h"
 
 #include <boost/foreach.hpp>
 
@@ -25,10 +25,19 @@ void DrawPoints(sf::RenderWindow &render_window, const std::vector< Vector2<int>
   BOOST_FOREACH(const Vector2<int> &point, points)
   {
     sf::CircleShape dot(3.0f);
-    dot.setFillColor(sf::Color::White);
+    dot.setFillColor(sf::Color::Black);
     dot.setPosition(point.x, point.y);
     render_window.draw(dot);
   }
+}
+
+void PasteArray2DToSprite(const Array2D<float> &array2d, sf::Texture &texture, sf::Sprite &sprite)
+{
+   uint8_t *array2d_data = feudosim::ConvertArrayToSFMLFormat(array2d);
+   texture.update((const sf::Uint8 *)array2d_data);
+   sprite.setTexture(texture);
+
+   delete [] array2d_data;
 }
 
 }  // namespace feudosim

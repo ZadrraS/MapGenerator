@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <cstddef>
 #include <cstring>
+#include <cmath>
 
 namespace feudosim 
 {
@@ -41,6 +42,294 @@ class Array2D
   ~Array2D() 
   {
     Clean();
+  }
+
+  Array2D &operator*=(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) *= array2d.At(x, y);
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator*(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) *= array2d.At(x, y);
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator/=(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) /= array2d.At(x, y);
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator/(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) /= array2d.At(x, y);
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator+=(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) += array2d.At(x, y);
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator+(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) += array2d.At(x, y);
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator-=(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) -= array2d.At(x, y);
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator-(const Array2D &array2d) 
+  {
+    if (width_ != array2d.width() || height_ != array2d.height())
+      throw std::invalid_argument("Given Array2D dimensions don't match.");
+
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) -= array2d.At(x, y);
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator*=(T rhs) 
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) *= rhs;
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator*(T rhs)
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) *= rhs;
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator/=(T rhs) 
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) /= rhs;
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator/(T rhs)
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) /= rhs;
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator+=(T rhs) 
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) += rhs;
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator+(T rhs)
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) += rhs;
+      }
+    }
+    
+    return new_array;
+  }
+
+  Array2D &operator-=(T rhs) 
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        At(x, y) -= rhs;
+      }
+    }
+
+    return *this;
+  }
+
+  Array2D operator-(T rhs)
+  {
+    if (width_ == 0 || height_ == 0)
+      throw std::invalid_argument("Given Array2D is empty.");
+
+    Array2D<T> new_array(*this);
+    for (size_t y = 0; y < height_; ++y)
+    {
+      for (size_t x = 0; x < width_; ++x)
+      {
+        new_array.At(x, y) -= rhs;
+      }
+    }
+    
+    return new_array;
   }
 
   Array2D &operator=(const Array2D &array2d) 
@@ -121,23 +410,7 @@ class Array2D
 
   void Normalize()
   {
-    if (data_ != NULL)
-    {
-      T max_value = At(0, 0);
-      T min_value = At(0, 0);
-      for (size_t y = 0; y < height_; ++y)
-      {
-        for (size_t x = 0; x < width_; ++x)
-        {
-          if (At(x, y) > max_value)
-            max_value = At(x, y);
-          if (At(x, y) < min_value)
-            min_value = At(x, y);
-        }
-      }
-
-      Normalize(min_value, max_value);
-    }
+      Normalize((T)0.0, (T)1.0);
   }
 
 
@@ -145,11 +418,56 @@ class Array2D
   {
     if (data_ != NULL)
     {
+      T min_array_val = At(0, 0);
+      T max_array_val = At(0, 0);
       for (size_t y = 0; y < height_; ++y)
       {
         for (size_t x = 0; x < width_; ++x)
         {
-          At(x, y) = (At(x, y) - min_value) / (max_value - min_value);
+          if (At(x, y) > max_array_val)
+            max_array_val = At(x, y);
+          if (At(x, y) < min_array_val)
+            min_array_val = At(x, y);
+        }
+      }
+
+      for (size_t y = 0; y < height_; ++y)
+      {
+        for (size_t x = 0; x < width_; ++x)
+        {
+          At(x, y) = (At(x, y) - min_array_val) / (max_array_val - min_array_val);
+          At(x, y) = At(x, y) * (max_value - min_value) + min_value;
+        }
+      }
+    }
+  }
+
+  void Abs()
+  { 
+    if (data_ != NULL)
+    {
+      for (size_t y = 0; y < height_; ++y)
+      {
+        for (size_t x = 0; x < width_; ++x)
+        {
+          At(x, y) = (T)fabs(At(x, y));
+        }
+      }
+    }
+  }
+
+  void Clip(const T &min_value, const T &max_value)
+  {
+    if (data_ != NULL)
+    {
+      for (size_t y = 0; y < height_; ++y)
+      {
+        for (size_t x = 0; x < width_; ++x)
+        {
+          if (At(x, y) < min_value)
+            At(x, y) = min_value;
+          else if (At(x, y) > max_value)
+            At(x, y) = max_value;
         }
       }
     }
