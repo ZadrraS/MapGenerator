@@ -22,6 +22,8 @@ add_executable(feudosim
 
   graphics/sfml_conversion.cpp
   graphics/map_render_gradient.cpp
+
+  helpers/gradient.cpp
 )
 
 install(TARGETS feudosim DESTINATION bin)

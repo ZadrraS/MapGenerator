@@ -10,7 +10,7 @@ namespace math
 
 const double PI = 3.141592653589793;
 
-inline float InterpolateLinear(double x0, double x1, double alpha)
+inline double InterpolateLinear(double x0, double x1, double alpha)
 {
    return x0 * (1.0 - alpha) + alpha * x1;
 }

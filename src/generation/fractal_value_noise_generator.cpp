@@ -1,6 +1,6 @@
 #include "generation/fractal_value_noise_generator.h"
 
-#include "map/array2d.h"
+#include "helpers/array2d.h"
 #include "helpers/math.h"
 
 #include <random>

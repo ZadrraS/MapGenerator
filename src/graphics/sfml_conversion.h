@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "map/array2d.h"
+#include "helpers/array2d.h"
 #include "helpers/vector2.h"
 
 namespace feudosim 

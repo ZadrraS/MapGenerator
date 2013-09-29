@@ -1,7 +1,7 @@
 #ifndef FEUDOSIM_GRAPHICS_MAP_RENDER_GRADIENT_H_
 #define FEUDOSIM_GRAPHICS_MAP_RENDER_GRADIENT_H_
 
-#include "map/array2d.h"
+#include "helpers/array2d.h"
 
 #include <SFML/Graphics.hpp>
 

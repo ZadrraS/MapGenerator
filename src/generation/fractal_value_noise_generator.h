@@ -1,7 +1,7 @@
 #ifndef FEUDOSIM_GENERATION_FRACTAL_VALUE_NOISE_GENERATOR_H_
 #define FEUDOSIM_GENERATION_FRACTAL_VALUE_NOISE_GENERATOR_H_
 
-#include "map/array2d.h"
+#include "helpers/array2d.h"
 #include "generation/fractal_noise_generator.h"
 
 #include <random>

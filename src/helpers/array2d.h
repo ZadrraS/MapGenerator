@@ -1,5 +1,5 @@
-#ifndef FEUDOSIM_MAP_ARRAY2D_H_
-#define FEUDOSIM_MAP_ARRAY2D_H_
+#ifndef FEUDOSIM_HELPERS_ARRAY2D_H_
+#define FEUDOSIM_HELPERS_ARRAY2D_H_
 
 #include <stdexcept>
 #include <cstddef>
@@ -481,4 +481,4 @@ class Array2D
 
 }  // namespace feudosim
 
-#endif  // FEUDOSIM_MAP_ARRAY2D_H_
+#endif  // FEUDOSIM_HELPERS_ARRAY2D_H_
