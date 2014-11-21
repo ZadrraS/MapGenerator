@@ -1,4 +1,4 @@
-FeudoSim
+MapGenerator
 ========
 
-A small feudal trade, manufacture and ethnographic simulator.
+Experiments with map generation for some of my other projects. In very early stages at the moment.
